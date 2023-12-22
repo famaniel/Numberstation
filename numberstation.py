@@ -20,7 +20,9 @@ class Number:
 
     @property
     def now(self):
-        return self.initial + int((datetime.now() - self.t0).total_seconds() * self.increment)
+        if type(self.initial) == int or type(self.initial) == float:
+            return self.initial + int((datetime.now() - self.t0).total_seconds() * self.increment)
+        return self.initial
 
 
 current_number = None
@@ -50,7 +52,7 @@ def number():
     token = request.query.token or 0
     if r == 0 and g == 0 and b == 0:
         (r, g, b) = hsv_to_rgb(random(), 1, 1)
-    number = Number(d, float(n), (r, g, b), int(i), datetime.now())
+    number = Number(d, n, (r, g, b), int(i), datetime.now())
     if token == 'geheim':
         priorityQueue.put(number)
         when = len(priorityQueue.queue) * interval

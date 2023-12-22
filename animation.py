@@ -304,9 +304,9 @@ class GrowingNumbers(Numbers):
         self.t0 = t0
 
     def update(self, index, count):
-        if index == 0:
-            n = self.initial + int((datetime.now() - self.t0).total_seconds() * self.increment)
-            self.set(f'{n:11.0f}')
+        if index == 0 and (type(self.initial) == int or type(self.initial) == float):
+                n = self.initial + int((datetime.now() - self.t0).total_seconds() * self.increment)
+                self.set(f'{n:11.0f}')
         return super().update(index, count)
 
 
