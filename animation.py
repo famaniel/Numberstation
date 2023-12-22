@@ -1,5 +1,6 @@
 import random
 import colorsys
+from datetime import datetime
 from time import time
 from typing import Tuple
 
@@ -250,15 +251,8 @@ class ChaseRandom(Animation):
 class Numbers(Animation):
     def __init__(self, digits, color):
         super(Numbers, self).__init__()
-        available = "0123456789abcdef -A"
-        if type(digits) == str:
-            self.digits = []
-            digits = digits[:11]
-            for d in digits.lower()[::-1]:
-                c = available.find(d)
-                self.digits.append(c if c != -1 else 10)
-        else:
-            self.digits = digits
+        self.digits = [17] * 11
+        self.available = "0123456789abcdef -A"
         self.color = color
         self.segments_for_digits = [
             # 1, 2, 3, 4, 5, 6, 7
@@ -281,6 +275,19 @@ class Numbers(Animation):
             [0, 0, 0, 0, 0, 0, 0, 0],  # 16 " "
             [0, 0, 0, 0, 0, 0, 1, 0],  # 17 -
         ]
+        self.set(digits)
+
+    def set(self, digits):
+        if type(digits) == str:
+            self.digits = []
+            digits = digits[:11]
+            for d in digits.lower()[::-1]:
+                c = self.available.find(d)
+                self.digits.append(c if c != -1 else 10)
+        elif type(digits) == int:
+            self.digits = digits
+        else:
+            self.digits = [17] * 11
 
     def update(self, index, count):
         if index / 8 >= len(self.digits):
@@ -288,6 +295,19 @@ class Numbers(Animation):
         n = self.digits[int(index / 8)]
         s = self.segments_for_digits[n][index % 8]
         return self.color if s != 0 else (0, 0, 0)
+
+class GrowingNumbers(Numbers):
+    def __init__(self, initial, color, increment, t0):
+        super().__init__(initial, color)
+        self.initial = initial
+        self.increment = increment
+        self.t0 = t0
+
+    def update(self, index, count):
+        if index == 0:
+            n = self.initial + int((datetime.now() - self.t0).total_seconds() * self.increment)
+            self.set(f'{n:11.0f}')
+        return super().update(index, count)
 
 
 def hsv_to_rgb(h, s, v):

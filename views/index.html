@@ -4,5 +4,13 @@
 </head>
 <body>
 <h1>Numberstation</h1>
+<h2>Current Number</h2>
+<p>{{ current.description }}: {{ current.now }}</p>
+<h2>Coming Up</h2>
+<ol>
+%for n in coming_up:
+        <li>{{ n.description }}</li>
+%end
+</ol>
 </body>
 </html>
