@@ -48,7 +48,7 @@ class StairvilleLedPar56(RGB):
 
 
 class DMX:
-    def __init__(self, host, port=0x1936, universe=1, maxchan=512):
+    def __init__(self, host, port=0x1936, universe=1, maxchan=512, refresh_rate=30):
         self._host = host
         self._port = port
         self._universe = universe
@@ -67,6 +67,7 @@ class DMX:
         self._rgbs = []
         self._thread = None
         self._updating = False
+        self.refresh_rate = refresh_rate
 
     def start(self):
         if self._thread and self._thread.is_alive():
@@ -81,7 +82,7 @@ class DMX:
             # print("updating")
             # print(self.data)
             # break
-            sleep(1.0 / 30)
+            sleep(1.0 / self.refresh_rate)
 
     def update(self):
         if not self._animation:
