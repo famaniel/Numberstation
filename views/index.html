@@ -1,39 +1,55 @@
 <html>
 <head>
-    <title>Numberstation</title>
+    <title>Panumba Numberstation</title>
     <meta http-equiv="refresh" content="5">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font: 12px 'Arial', sans-serif;
+        }
+        .current {
+            font: 64px 'Arial', sans-serif;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
-<h1>Numberstation</h1>
+<h1>Panumba Numberstation</h1>
 
-<h2>Current Number</h2>
-<p>{{ current.description }}</p>
-<p style="padding: 8px 12px; background-color: black; color: rgb{{current.color}}; font-size: 20px">{{ current.now }}</p>
+<div class="current">
+<h2>{{ current.description }}</h2>
+<p style="padding: 8px 12px; color: rgb{{current.color}}; font: 300% 'Arial Black', Arial, sans-serif ">{{ current.now }}</p>
+</div>
 
 <h2>Coming Up</h2>
 <ol>
-    %for n in coming_up:
-    <li>{{ n.description }}</li>
-    %end
+%for n in coming_up:
+    <li>{{ n.description }}: <span style="color: rgb{{n.color}}; background-color: black; padding: 4px 12px;">{{ n.now }}</span></li>
+%end
 </ol>
 
-<h2>Displaying your own number</h2>
-<p>
-    To display your own number, request the url <tt>/number</tt> with these query string parameters:
-</p>
-<ul>
-    <li>n: the number to display. The system can only display integers, but they can be negative. Up to 11 digits are
-        available.
-    </li>
-    <li>d: description of your number.</li>
-    <li>r, g, b: the color your number should be displayed in. Optional; if you leave it off, you will get a random
-        color.
-    </li>
-    <li>i: increment: if your number changes, then give the change per second. The number will be incremented by this
-        value per second from the time you submit your number.
-    </li>
-</ul>
+<div class="explanation">
+    <h2>Displaying your own number</h2>
+    <p>
+        To display your own number, request the url <tt>/number</tt> with these query string parameters:
+    </p>
+    <ul>
+        <li>n: the number to display. The system can only display integers, but they can be negative. Up to 11 digits
+            are
+            available.
+        </li>
+        <li>d: description of your number.</li>
+        <li>r, g, b: the color your number should be displayed in. Optional; if you leave it off, you will get a random
+            color.
+        </li>
+        <li>i: increment: if your number changes, then give the change per second. The number will be incremented by
+            this
+            value per second from the time you submit your number.
+        </li>
+    </ul>
+</div>
 
 </body>
 </html>

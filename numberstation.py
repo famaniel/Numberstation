@@ -43,12 +43,16 @@ def index():
 @route('/number')
 @view('number')
 def number():
-    d = request.query.description or 'unknown number'
+    d = request.query.description or request.query.d or 'unknown number'
     n = request.query.number or request.query.n or ''
     r = request.query.r or 0
     g = request.query.g or 0
     b = request.query.b or 0
     i = request.query.i or 0
+    try:
+        n = int(n)
+    except ValueError:
+        pass
     token = request.query.token or 0
     if r == 0 and g == 0 and b == 0:
         (r, g, b) = hsv_to_rgb(random(), 1, 1)
@@ -104,7 +108,7 @@ numbers = [
 backgroundQueue = Queue(maxsize=500)
 priorityQueue = Queue(maxsize=250)
 
-dmx = DMX('127.0.0.1', maxchan=264)
+dmx = DMX('127.0.0.1', maxchan=264, universe=0)
 
 for digit in range(11):
     for segment in range(8):
