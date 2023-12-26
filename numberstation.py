@@ -1,9 +1,12 @@
+import json
 import time
 import threading
 from datetime import datetime
 from random import random
-from bottle import post, request, route, run, static_file, view
+from bottle import post, request, route, run, static_file, view, get
 from queue import Queue
+from bottle.ext.websocket import GeventWebSocketServer
+from bottle.ext.websocket import websocket
 
 from animation import Numbers, Chase, hsv_to_rgb, GrowingNumbers
 from dmx import DMX, RGB
@@ -27,6 +30,7 @@ class Number:
 
 current_number = None
 interval = 10
+clients = []
 
 
 @route('/')
@@ -69,6 +73,57 @@ def number():
     }
 
 
+@get('/ws', apply=[websocket])
+def ws(ws):
+    global clients
+    global current_number
+    clients.append(ws)
+    ws.send(number_to_json(current_number))
+    while True:
+        if ws.receive() is None:
+            break
+    clients.remove(ws)
+
+@route('/static/<filename>')
+def server_static(filename):
+    return static_file(filename, root='static')
+
+
+def number_to_json(number):
+    coming_up = list(priorityQueue.queue)
+    coming_up.extend(list(backgroundQueue.queue))
+    return json.dumps({
+        'number': {
+            'description': current_number.description,
+            'initial': current_number.initial,
+            'now': current_number.now,
+            'color': {
+                'r': current_number.color[0],
+                'g': current_number.color[1],
+                'b': current_number.color[2],
+            },
+            'increment': current_number.increment,
+            't0': current_number.t0.isoformat(),
+        },
+        'coming_up': [{
+            'initial': n.initial,
+            'description': n.description,
+            'color': {'r': n.color[0], 'g': n.color[1], 'b': n.color[2]},
+        } for n in coming_up]
+    })
+
+def send_ws():
+    global clients
+    for ws in clients:
+        def send():
+            try:
+                ws.send(number_to_json(current_number))
+            except Exception:
+                self.wsstats_clients.remove(ws)
+
+        t = threading.Thread(target=send, daemon=True).start()
+
+
 def set_animation(n: Numbers) -> None:
     dmx.animation = n
 
@@ -85,6 +140,7 @@ def queue_worker() -> None:
             # set_animation(Numbers(f'{random()*100000000000:011.0f}', (hsv_to_rgb(random(), 1, 1))))
             current_number = numbers[int(random() * len(numbers))]
         set_animation(current_number.animation)
+        send_ws()
         time.sleep(interval)
 
 
@@ -118,4 +174,4 @@ threading.Thread(target=queue_worker, daemon=True).start()
 
 dmx.start()
 
-run(host='0.0.0.0', port=8080, reloader=False, debug=True)
+run(host='0.0.0.0', port=8080, reloader=False, debug=True, server=GeventWebSocketServer)

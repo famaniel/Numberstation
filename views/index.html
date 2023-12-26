@@ -2,7 +2,8 @@
 
 <head>
     <title>Panumba Numberstation</title>
-    <meta http-equiv="refresh" content="5">
+    <!--meta http-equiv="refresh" content="5"-->
+    <script src="/static/main.js"></script>
     <style>
         body {
             background-color: black;
@@ -17,9 +18,14 @@
             text-shadow: 0 0 5px #C8C8C8;
         }
 
-        .current {
+        #current {
             font: 64px 'Inconsolata', monospace;
             text-align: center;
+        }
+
+        #current_number {
+            padding: 8px 12px;
+            font: 300% 'Arial Black', Arial, sans-serif;
         }
 
         .blinking {
@@ -49,17 +55,13 @@
 
     <h1>Panumba Numberstation</h1>
 
-    <div class="current">
-
-        <p style="padding: 8px 12px; color: rgb{{current.color}}; font: 300% 'Arial Black', Arial, sans-serif ">{{ current.now }}</p>
-        <h2><span id="current-description">{{ current.description }} <!-- please count the length: The color of the sea on a
-                rainy Monday is subjective and can vary depending on the location and
-                weather conditions. However, there are seven primary colors in the visible spectrum, so we can assign
-                the number 7 to represent the range of possible colors.--></span></h2>
+    <div id="current">
+        <div id="current_number" style="color: rgb{{current.color}}">{{ current.now }}</div>
+        <h2 id="current_description">{{ current.description }}</h2>
     </div>
 
     <h2 class="blinking">Coming Up</h2>
-    <ol>
+    <ol id="coming_up">
         %for n in coming_up:
         <li>{{ n.description }}: <span style="color: rgb{{n.color}}; background-color: black; padding: 4px 12px;">{{ n.now }}</span></li>
         %end
@@ -83,19 +85,6 @@
             </li>
         </ul>
     </div>
-    <script>
-
-        var description = document.getElementById('current-description');
-
-
-        var length = description.innerText.length;
-
-        if (length > 100) {
-            description.style.fontSize = '0.5em';
-        } else if (length > 50) {
-            description.style.fontSize = '0.8em';
-        }
-    </script>
 </body>
 
 </html>
