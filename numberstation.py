@@ -77,6 +77,8 @@ def number():
 def ws(ws):
     global clients
     global current_number
+    if ws is None:
+        return
     clients.append(ws)
     ws.send(number_to_json(current_number))
     while True:

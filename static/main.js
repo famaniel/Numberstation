@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     let coming_up = document.getElementById('coming_up');
     let increment = undefined;
     let updateNumber = function(json) {
-        // console.log(json);
+        console.log(json);
         if (increment !== undefined) {
             clearInterval(increment);
         }
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
     ws.onclose = function(e) {
       //updateConnected(false);
-      setTimeout(updateStatsWs, 1000);
+      setTimeout(updateStatsWs, 10000);
     }
   }
 
