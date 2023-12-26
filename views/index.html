@@ -1,55 +1,101 @@
 <html>
+
 <head>
     <title>Panumba Numberstation</title>
     <meta http-equiv="refresh" content="5">
     <style>
         body {
             background-color: black;
-            color: white;
-            font: 12px 'Arial', sans-serif;
+
+            height: 100vh;
+            margin: 0;
+            overflow: auto;
+            padding: 2rem;
+            color: #0f0;
+            font-family: 'Inconsolata', monospace;
+            font-size: 1.3rem;
+            text-shadow: 0 0 5px #C8C8C8;
         }
+
         .current {
-            font: 64px 'Arial', sans-serif;
+            font: 64px 'Inconsolata', monospace;
             text-align: center;
+        }
+
+        .blinking {
+            color: green;
+            font-weight: bold;
+
+
+            animation: blinkingCursor 1s infinite;
+        }
+
+
+        @keyframes blinkingCursor {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<h1>Panumba Numberstation</h1>
+    <h1>Panumba Numberstation</h1>
 
-<div class="current">
-<h2>{{ current.description }}</h2>
-<p style="padding: 8px 12px; color: rgb{{current.color}}; font: 300% 'Arial Black', Arial, sans-serif ">{{ current.now }}</p>
-</div>
+    <div class="current">
 
-<h2>Coming Up</h2>
-<ol>
-%for n in coming_up:
-    <li>{{ n.description }}: <span style="color: rgb{{n.color}}; background-color: black; padding: 4px 12px;">{{ n.now }}</span></li>
-%end
-</ol>
+        <p style="padding: 8px 12px; color: rgb{{current.color}}; font: 300% 'Arial Black', Arial, sans-serif ">{{ current.now }}</p>
+        <h2><span id="current-description">{{ current.description }} <!-- please count the length: The color of the sea on a
+                rainy Monday is subjective and can vary depending on the location and
+                weather conditions. However, there are seven primary colors in the visible spectrum, so we can assign
+                the number 7 to represent the range of possible colors.--></span></h2>
+    </div>
 
-<div class="explanation">
-    <h2>Displaying your own number</h2>
-    <p>
-        To display your own number, request the url <tt>/number</tt> with these query string parameters:
-    </p>
-    <ul>
-        <li>n: the number to display. The system can only display integers, but they can be negative. Up to 11 digits
-            are
-            available.
-        </li>
-        <li>d: description of your number.</li>
-        <li>r, g, b: the color your number should be displayed in. Optional; if you leave it off, you will get a random
-            color.
-        </li>
-        <li>i: increment: if your number changes, then give the change per second. The number will be incremented by
-            this
-            value per second from the time you submit your number.
-        </li>
-    </ul>
-</div>
+    <h2 class="blinking">Coming Up</h2>
+    <ol>
+        %for n in coming_up:
+        <li>{{ n.description }}: <span style="color: rgb{{n.color}}; background-color: black; padding: 4px 12px;">{{ n.now }}</span></li>
+        %end
+    </ol>
 
+    <div class="explanation">
+        <h2 class="blinking">Displaying your own number</h2>
+        <p>
+            To display your own number, request the url <tt>/number</tt> with these query string parameters:
+        </p>
+        <ul>
+            <li>n: the number to display. The system can only display integers, but they can be negative. Up to 11
+                digits are available.
+            </li>
+            <li>d: description of your number.</li>
+            <li>r, g, b: the color your number should be displayed in. Optional; if you leave it off, you will get a
+                random color.
+            </li>
+            <li>i: increment: if your number changes, then give the change per second. The number will be incremented by
+                this value per second from the time you submit your number.
+            </li>
+        </ul>
+    </div>
+    <script>
+
+        var description = document.getElementById('current-description');
+
+
+        var length = description.innerText.length;
+
+        if (length > 100) {
+            description.style.fontSize = '0.5em';
+        } else if (length > 50) {
+            description.style.fontSize = '0.8em';
+        }
+    </script>
 </body>
+
 </html>
