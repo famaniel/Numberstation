@@ -29,7 +29,7 @@
         }
 
         .qr {
-            text-align: center;
+            float: right;
         }
 
         .blinking {
@@ -58,19 +58,17 @@
 
     <h1>Panumba Numberstation</h1>
 
-    <h1>Panumba Numberstation</h1>
-    <div class="qr">
-
-        <p>scan this QR and ask AI for a number:</p>
-        <!-- qr to heroku question terminal (herokurl): -->
-        <img style="width:30%;"
-             src="static/question.panumba.de.png" alt="question.panumba.de">
-    </div>
     <div id="current">
         <div id="current_number" style="color: rgb{{current.color}}">{{ current.now }}</div>
         <h2 id="current_description">{{ current.description }}</h2>
     </div>
 
+    <div class="qr">
+        <p>scan this QR and ask AI for a number:</p>
+        <!-- qr to heroku question terminal (herokurl): -->
+        <img style="width:20%;"
+             src="static/question.panumba.de.png" alt="question.panumba.de">
+    </div>
     <h2 class="blinking">Coming Up</h2>
     <ol id="coming_up">
         %for n in coming_up:
