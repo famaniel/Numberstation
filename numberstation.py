@@ -153,14 +153,16 @@ numbers = [
            datetime(2023, 1, 1, 0, 0, 0)),
     Number('CO2 emissions this year', 35_657_226_000, (255, 255, 0), 20_943_023.0 / 365 / 24 / 60 / 60,
            datetime(2023, 12, 22, 12, 0, 0)),
-    Number('Google searches today', 8_500_000_000, (255, 0, 255), 8_500_000_000.0 / 24 / 60 / 60,
+    Number('Google searches tomorrow', 8_500_000_000, (255, 0, 255), 8_500_000_000.0 / 24 / 60 / 60,
            datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),
-    Number('Water used this year', 0, (0, 0, 255), 4_000_000_000.0 / 365 / 24 / 60 / 60,
+    Number('Water used next year', 0, (0, 0, 255), 4_000_000_000.0 / 365 / 24 / 60 / 60,
            datetime(2023, 1, 1, 0, 0, 0)),
-    Number('Seconds until 37c is over', 0, (255, 255, 0), 1,
+    Number('Seconds until 38C3 is over', 0, (255, 255, 0), 1,
            datetime(2023, 12, 30, 18, 0, 0)),
-    Number('Seconds until 38c3 starts', 0, (255, 0, 255), 1,
+    Number('Seconds after Robots annihilated humans', 0, (255, 0, 255), 1,
            datetime(2024, 12, 27, 11, 0, 0)),
+    Number('All your base are belong to us', 0, (255, 0, 255), 1,
+           datetime(2025, 12, 27, 11, 0, 0)),
 ]
 
 backgroundQueue = Queue(maxsize=500)
